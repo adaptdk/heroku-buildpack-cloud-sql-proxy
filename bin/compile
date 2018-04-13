@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+if [ ! -f $BUILD_DIR/cloud_sql_proxy ]; then
+	echo "-----> Downloading cloud_sql_proxy"
+	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O $BUILD_DIR/cloud_sql_proxy
+	chmod +x $BUILD_DIR/cloud_sql_proxy
+fi
+
+
+echo "-----> Vendoring cloud_sql_proxy into slug"
+if [ ! -d $BUILD_DIR/google ]; then
+	mkdir $BUILD_DIR/google
+fi
+cp $BUILD_DIR/cloud_sql_proxy $BUILD_DIR/google/
+
+
+if [ ! -d $BUILD_DIR/bin ]; then
+	mkdir $BUILD_DIR/bin
+fi
+
+exit 0
