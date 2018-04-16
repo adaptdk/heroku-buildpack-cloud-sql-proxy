@@ -6,22 +6,31 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-if [ ! -f $BUILD_DIR/cloud_sql_proxy ]; then
+if [ ! -f $CACHE_DIR/cloud_sql_proxy ]; then
 	echo "-----> Downloading cloud_sql_proxy"
-	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O $BUILD_DIR/cloud_sql_proxy
-	chmod +x $BUILD_DIR/cloud_sql_proxy
+	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O $CACHE_DIR/cloud_sql_proxy
 fi
-
 
 echo "-----> Vendoring cloud_sql_proxy into slug"
-if [ ! -d $BUILD_DIR/google ]; then
-	mkdir $BUILD_DIR/google
+if [ ! -d $BUILD_DIR/google/bin ]; then
+	mkdir -p $BUILD_DIR/google/bin
 fi
-cp $BUILD_DIR/cloud_sql_proxy $BUILD_DIR/google/
-
+cp $BUILD_DIR/cloud_sql_proxy $BUILD_DIR/google/bin
+chmod +x $BUILD_DIR/google/bin/cloud_sql_proxy
+PATH="$BUILD_DIR/google/bin:$PATH"
 
 if [ ! -d $BUILD_DIR/bin ]; then
 	mkdir $BUILD_DIR/bin
 fi
+
+if [ -f $ENV_DIR/GSP_CREDENTIALS ]; then
+	echo "-----> Adding credentials JSON"
+	cp $ENV_DIR/GSP_CREDENTIALS $BUILD_DIR/google/credentials.json
+fi
+
+cat >$1/bin/run_cloud_sql_proxy <<EOF
+#!/bin/sh
+exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES\=tcp:3306
+EOF
 
 exit 0
