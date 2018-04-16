@@ -15,7 +15,7 @@ echo "-----> Vendoring cloud_sql_proxy into slug"
 if [ ! -d $BUILD_DIR/google/bin ]; then
 	mkdir -p $BUILD_DIR/google/bin
 fi
-cp $BUILD_DIR/cloud_sql_proxy $BUILD_DIR/google/bin
+cp $CACHE_DIR/cloud_sql_proxy $BUILD_DIR/google/bin
 chmod +x $BUILD_DIR/google/bin/cloud_sql_proxy
 PATH="$BUILD_DIR/google/bin:$PATH"
 
