@@ -8,6 +8,7 @@ ENV_DIR=$3
 
 if [ ! -f $CACHE_DIR/cloud_sql_proxy ]; then
 	echo "-----> Downloading cloud_sql_proxy"
+	echo "       $CACHE_DIR"
 	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O $CACHE_DIR/cloud_sql_proxy
 fi
 
