@@ -34,7 +34,7 @@ fi
 
 cat >$BUILD_DIR/bin/run_cloud_sql_proxy <<EOF
 #!/bin/sh
-exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/tmp &
+exec /app/gooogle/bin/cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/tmp &
 EOF
 chmod +x $BUILD_DIR/bin/run_cloud_sql_proxy
 
