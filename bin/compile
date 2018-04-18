@@ -29,9 +29,10 @@ if [ -f $ENV_DIR/GSP_CREDENTIALS ]; then
 	cp $ENV_DIR/GSP_CREDENTIALS $BUILD_DIR/google/credentials.json
 fi
 
+mkdir -p /cloudsql
 cat >$BUILD_DIR/bin/run_cloud_sql_proxy <<EOF
 #!/bin/sh
-exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES\=tcp:3306
+exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/cloudsql
 EOF
 
 exit 0
