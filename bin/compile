@@ -39,6 +39,6 @@ EOF
 chmod +x $BUILD_DIR/bin/run_cloud_sql_proxy
 
 echo "-----> Starting proxy (bad form)"
-
+$BUILD_DIR/bin/run_cloud_sql_proxy
 
 exit 0
