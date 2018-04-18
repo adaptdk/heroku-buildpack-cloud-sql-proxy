@@ -29,10 +29,16 @@ if [ -f $ENV_DIR/GSP_CREDENTIALS ]; then
 	cp $ENV_DIR/GSP_CREDENTIALS $BUILD_DIR/google/credentials.json
 fi
 
+echo "-----> Create socket dir"
 mkdir -p /cloudsql
+
 cat >$BUILD_DIR/bin/run_cloud_sql_proxy <<EOF
 #!/bin/sh
 exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/cloudsql
 EOF
+chmod +x $BUILD_DIR/bin/run_cloud_sql_proxy
+
+echo "-----> Starting proxy (bad form)"
+
 
 exit 0
