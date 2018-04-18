@@ -34,11 +34,8 @@ fi
 
 cat >$BUILD_DIR/bin/run_cloud_sql_proxy <<EOF
 #!/bin/sh
-exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/tmp
+exec cloud_sql_proxy -credential_file=$BUILD_DIR/google/credentials.json -instances=\$GSP_INSTANCES -dir=/tmp &
 EOF
 chmod +x $BUILD_DIR/bin/run_cloud_sql_proxy
-
-echo "-----> Starting proxy (bad form)"
-GSP_INSTANCES=`cat $ENV_DIR/GSP_INSTANCES` $BUILD_DIR/bin/run_cloud_sql_proxy
 
 exit 0
